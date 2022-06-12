@@ -50,7 +50,7 @@ export async function getServerSideProps(context) {
     console.log("BLAHHHH");
     console.log(error);
     return {
-      props: { dummyhotspots, dummykoalas },
+      props: { hotspots: dummyhotspots, koalas: dummykoalas },
     };
   }
 }
