@@ -35,16 +35,10 @@ export default function TreeDashboard(props) {
         <button
           className="p-2 bg-neutral-200 border border-council_secondary rounded-xl text-council_secondary"
           onClick={() => {
-            console.log("Loadings");
             props.userLocation[1]("Loading...");
             navigator.geolocation.getCurrentPosition(
               function (position) {
                 props.userLocation[1]([
-                  position.coords.latitude,
-                  position.coords.longitude,
-                ]);
-                console.log(props.userLocation[0]);
-                console.log([
                   position.coords.latitude,
                   position.coords.longitude,
                 ]);

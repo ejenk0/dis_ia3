@@ -23,7 +23,7 @@ export default function KoalaDashboard({ hotspots, koalas, userLocation }) {
 
   const map = (
     <Map
-      markers={koalas.results.filter(
+      markers={koalas.filter(
         (sighting) =>
           sighting.locality === sightingsLocalityFilter ||
           !sightingsLocalityFilter
@@ -62,7 +62,7 @@ export default function KoalaDashboard({ hotspots, koalas, userLocation }) {
           <b>Top 10 Koala Hotspots</b>
         </p>
         <DataTable
-          data={hotspots.results.slice(0, 10)}
+          data={hotspots.slice(0, 10)}
           buttons={[
             {
               col: "locality",
