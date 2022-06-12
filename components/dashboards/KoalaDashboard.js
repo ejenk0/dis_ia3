@@ -70,7 +70,7 @@ export default function KoalaDashboard({ hotspots, koalas, userLocation }) {
                 <button
                   onClick={(e) => {
                     setSightingsLocalityFilter(row.locality);
-                    const markers = koalas.results.filter(
+                    const markers = koalas.filter(
                       (sighting) =>
                         sighting.locality === sightingsLocalityFilter ||
                         !sightingsLocalityFilter
