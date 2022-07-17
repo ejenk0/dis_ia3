@@ -1,6 +1,6 @@
 export default function DataTable(props) {
   const data = props.data;
-  const buttons = props.buttons;
+  const buttons = props.buttons ? props.buttons : [];
   var buffer = [];
   var colnames = [];
 

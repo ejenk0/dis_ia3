@@ -17,7 +17,6 @@ export default function Layout({ children, page }) {
             width={225}
             height={225}
             layout="fill"
-            objectFit="contain"
           />
         </div>
         <div className="text-center flex-grow text-4xl text-gray-50 font-head tracking-wider">

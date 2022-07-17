@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 import db from "../db/db";
 import { dummykoalas, dummyhotspots } from "../db/DummyData";
 
-export default function Home({ hotspots, koalas }) {
+export default function Home({ hotspots, koalas, treesdata }) {
   const userLocation = useState(null);
   const page = useState("koalas");
   return (
@@ -18,7 +18,7 @@ export default function Home({ hotspots, koalas }) {
             userLocation={userLocation}
           />
         ) : page[0] === "trees" ? (
-          <TreeDashboard userLocation={userLocation} />
+          <TreeDashboard treesdata={treesdata} userLocation={userLocation} />
         ) : (
           <></>
         )}
@@ -29,6 +29,13 @@ export default function Home({ hotspots, koalas }) {
 
 export async function getServerSideProps(context) {
   try {
+    const treesdata = (
+      await (
+        await fetch(
+          "https://data.gov.au/geoserver/tree-register/wfs?request=GetFeature&typeName=ckan_13079796_1b3a_448d_8a09_d7fda5611c5f&outputFormat=json"
+        )
+      ).json()
+    ).features;
     const hotspots = await (
       await db
     ).all(`
@@ -44,13 +51,18 @@ export async function getServerSideProps(context) {
 
     const koalas = await (await db).all("SELECT * FROM koalas");
     return {
-      props: { hotspots, koalas },
+      props: { hotspots, koalas, treesdata },
     };
   } catch (error) {
-    console.log("BLAHHHH");
-    console.log(error);
+    const treesdata = (
+      await (
+        await fetch(
+          "https://data.gov.au/geoserver/tree-register/wfs?request=GetFeature&typeName=ckan_13079796_1b3a_448d_8a09_d7fda5611c5f&outputFormat=json"
+        )
+      ).json()
+    ).features;
     return {
-      props: { hotspots: dummyhotspots, koalas: dummykoalas },
+      props: { hotspots: dummyhotspots, koalas: dummykoalas, treesdata },
     };
   }
 }

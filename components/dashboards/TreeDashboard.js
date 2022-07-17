@@ -1,8 +1,37 @@
 import { faMagnifyingGlassLocation } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
+import DataTable from "../DataTable";
+
+function d(point, origin) {
+  return Math.sqrt(
+    Math.pow(point.lat - origin.lat, 2) + Math.pow(point.lng - origin.lng, 2)
+  );
+}
 
 export default function TreeDashboard(props) {
+  var treesdata = props.treesdata.map((t) => {
+    return {
+      road: t.properties.road_name,
+      suburb: t.properties.suburb,
+      species: t.properties.tree_speci,
+      lat: t.properties.latitudey,
+      lng: t.properties.longitudex,
+    };
+  });
+  if (props.userLocation[0]) {
+    treesdata = treesdata.sort(
+      (a, b) =>
+        d(
+          { lat: a.lat, lng: a.lng },
+          { lat: props.userLocation[0][0], lng: props.userLocation[0][1] }
+        ) -
+        d(
+          { lat: b.lat, lng: b.lng },
+          { lat: props.userLocation[0][0], lng: props.userLocation[0][1] }
+        )
+    );
+  }
   return (
     <div className="w-full my-2">
       <div id="treeinfobox">
@@ -35,7 +64,7 @@ export default function TreeDashboard(props) {
         <button
           className="p-2 bg-neutral-200 border border-council_secondary rounded-xl text-council_secondary"
           onClick={() => {
-            props.userLocation[1]("Loading...");
+            // props.userLocation[1]("Loading...");
             navigator.geolocation.getCurrentPosition(
               function (position) {
                 props.userLocation[1]([
@@ -52,7 +81,15 @@ export default function TreeDashboard(props) {
         >
           <FontAwesomeIcon icon={faMagnifyingGlassLocation} fontSize={40} />
         </button>
-        {props.userLocation[0]}
+        {props.userLocation[0] ? (
+          <div>
+            Your location: (Lat: {props.userLocation[0][0]}, Lng:{" "}
+            {props.userLocation[0][1]})
+          </div>
+        ) : (
+          <div>No location found</div>
+        )}
+        <DataTable data={treesdata} />
       </div>
     </div>
   );
